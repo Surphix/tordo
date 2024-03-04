@@ -20,3 +20,21 @@ terraform -chdir=tf apply
 ```
 ansible-playbook -i ansible/inv.digitalocean.yaml deploy.yaml
 ```
+
+### Using a Specific Tor Bridge with Tor Browser
+
+1. **Obtain Bridge Configuration**: Obtain the bridge configuration details, including the bridge address, port, and any additional parameters such as a bridge password or obfs4 parameters.
+
+2. **Configure Tor Browser**:
+   - Open Tor Browser and click on the menu button (three horizontal lines) in the top-right corner.
+   - Select "Preferences" or "Options" from the menu.
+   - In the preferences/options window, go to the "Tor" or "Privacy & Security" section.
+   - Scroll down to the "Tor Network Settings" or "Tor Connection" section.
+   - Look for the "Bridges" configuration option and click on "Configure".
+   - Enter the bridge configuration details obtained in step 1, including the bridge address, port, and any additional parameters.
+   - Click "OK" or "Save" to save the bridge configuration.
+
+3. **Connect to Tor Network**: Close and reopen the Tor Browser. It should now attempt to connect to the Tor network using the specified bridge.
+
+Keep in mind to periodically update the bridge configuration as bridge addresses may change over time. Additionally, ensure that you obtain the correct bridge configuration details from a trusted source.
+
