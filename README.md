@@ -11,15 +11,17 @@ Once you have set up these environment variables, you can proceed with running t
 
 # Execution
 
-## Infrastructure
+### Infrastructure
 ```
 terraform -chdir=tf apply
 ```
 
-## Tor intsall
+### Tor intsall
 ```
 ansible-playbook -i ansible/inv.digitalocean.yaml deploy.yaml
 ```
+
+# Tor Browser
 
 ### Using a Specific Tor Bridge with Tor Browser
 
