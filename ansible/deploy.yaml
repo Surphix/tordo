@@ -1,0 +1,10 @@
+- name: Install TOR Bridge
+  hosts: bridge
+  become: yes
+  gather_facts: no
+  remote_user: root
+  serial: 1
+  roles:
+    - configure
+    - install
+    - auto_updates

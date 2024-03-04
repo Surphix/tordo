@@ -1,0 +1,34 @@
+- name: Install dependencies
+  ansible.builtin.package:
+    name:
+      - unattended-upgrades 
+      - apt-listchanges
+    state: present
+
+- name: Unattended Upgrades
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    block: |
+      Unattended-Upgrade::Allowed-Origins {
+        "${distro_id}:${distro_codename}-security";
+        "TorProject:${distro_codename}";
+      };
+      Unattended-Upgrade::Package-Blacklist {
+      };
+      Unattended-Upgrade::Automatic-Reboot "true";
+
+- name: Auto Upgrades
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    block: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::AutocleanInterval "5";
+      APT::Periodic::Unattended-Upgrade "1";
+      APT::Periodic::Verbose "1";
+
+- name: Reboot
+  ansible.builtin.reboot:

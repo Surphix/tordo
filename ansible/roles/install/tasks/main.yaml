@@ -1,0 +1,32 @@
+#- name: Check if package manager lock exists
+#  ansible.builtin.stat:
+#    path: /var/lib/dpkg/lock-frontend  # Adjust path as per your package manager
+#  register: lock_file
+
+#- name: Wait for lock file to be released
+#  ansible.builtin.wait_for:
+#    path: /var/lib/dpkg/lock-frontend  # Adjust path as per your package manager
+#    state: absent
+#  when: lock_file.stat.exists
+
+- name: Install Tor
+  ansible.builtin.package:
+    name:
+      - tor 
+      - deb.torproject.org-keyring
+      - obfs4proxy
+
+- name: Create torrc
+  ansible.builtin.copy:
+    dest: /etc/tor/torrc
+    content: |
+      BridgeRelay 1
+      ORPort {{ lookup('ansible.builtin.env', 'ORPORT') | default(9001) }}
+      ServerTransportPlugin obfs4 exec /usr/bin/obfs4proxy
+      ServerTransportListenAddr obfs4 0.0.0.0:{{ lookup('ansible.builtin.env', 'OBFS4PORT') | default(9002) }}
+      ExtORPort auto
+      ContactInfo anonymous@nowhere.com
+      Nickname {{ lookup('password', '/dev/null length=10 chars=ascii_letters,digits') }}
+
+- name: Restart Tor
+  ansible.builtin.command: systemctl enable --now tor.service
