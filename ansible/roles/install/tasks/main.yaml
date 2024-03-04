@@ -25,7 +25,7 @@
       ServerTransportPlugin obfs4 exec /usr/bin/obfs4proxy
       ServerTransportListenAddr obfs4 0.0.0.0:{{ lookup('ansible.builtin.env', 'OBFS4PORT') | default(9002) }}
       ExtORPort auto
-      ContactInfo anonymous@nowhere.com
+      ContactInfo {{ lookup('ansible.builtin.env', 'CONTACT_EMAIL') }}
       Nickname {{ lookup('password', '/dev/null length=10 chars=ascii_letters,digits') }}
 
 - name: Restart Tor
